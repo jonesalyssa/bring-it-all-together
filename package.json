@@ -1,6 +1,7 @@
 {
   "name": "bring-it-all-together",
   "version": "1.0.0",
+<<<<<<< HEAD
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,16 +12,42 @@
   },
   "keywords": [],
   "author": "",
+=======
+  "description": "A full-stack application with authentication, database management, and API routes",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon database/index.js",
+    "start": "node database/index.js",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:generate": "prisma generate",
+    "prisma:studio": "prisma studio"
+  },
+  "keywords": [],
+  "author": "Alyssa Jones",
+>>>>>>> refs/remotes/origin/main
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^6.3.1",
     "bcrypt": "^5.1.1",
+<<<<<<< HEAD
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "pg": "^8.13.1",
     "prisma": "^6.3.1"
+=======
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.0",
+    "express": "^4.21.2",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.13.1",
+    "prisma": "^6.3.1",
+    "uuid": "^11.0.5"
+>>>>>>> refs/remotes/origin/main
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
