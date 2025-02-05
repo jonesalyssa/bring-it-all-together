@@ -13,21 +13,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-<<<<<<< HEAD
+
 
 model User {
   id        String   @id @default(uuid())
-  firstName String
-  lastName  String
+  first String
+  last String
   email     String   @unique
   password  String
-=======
-model User {
-  id          String    @id @default(uuid())
-  first       String
-  last        String
-  email       String    @unique
-  password    String
-
->>>>>>> refs/remotes/origin/main
 }
