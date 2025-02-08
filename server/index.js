@@ -9,7 +9,6 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const JWT = process.env.JWT;
 
-
 const isLoggedIn = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader?.slice(7);
@@ -34,27 +33,9 @@ const getUser = async (id) => {
 };
 
 app.post("/api/register", async (req, res, next) => {
-  // try {
-  //   const user = await prisma.user.create({
-  //     data: {
-  //       first: req.body.first,
-  //       last: req.body.last,
-  //       email: req.body.email,
-  //       password: req.body.password,
-  //     },
-  //   });
-  //   const token = jwt.sign({ id: user.id }, JWT, {
-  //     expiresIn: "24 hours",
-  //   });
-  //   res.status(201).send({ token });
-  // } catch (error) {
-  //   console.error(error);
-  //   next(error);
-  // }
-
   try {
     const { email, password } = req.body;
-    
+
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = await prisma.user.create({
       data: {
@@ -62,8 +43,8 @@ app.post("/api/register", async (req, res, next) => {
         last: req.body.last,
         email,
         password: hashedPassword,
-      }
-    })
+      },
+    });
 
     // Create a token with the instructor id
     const token = jwt.sign({ id: user.id }, JWT);
@@ -72,13 +53,12 @@ app.post("/api/register", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-
 });
 
 app.post("/api/login", async (req, res, next) => {
   // try {
   //   const user = await prisma.user.findFirstOrThrow({ where: {email: req.body.email, password: req.body.password}
- 
+
   //   });
 
   //   const isValid = await bcrypt.compare( password, user.password)
@@ -97,16 +77,15 @@ app.post("/api/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const user = await prisma.user.findFirstOrThrow({ where: {email}
-    });
+    const user = await prisma.user.findFirstOrThrow({ where: { email } });
 
     if (!user) {
       return res.status(401).send("Invalid User credentials.");
     }
 
     const isValid = await bcrypt.compare(password, user.password);
-    if(!isValid){
-      return res.status(401).send("Invalid login credentials.")
+    if (!isValid) {
+      return res.status(401).send("Invalid login credentials.");
     }
 
     // Create a token with the instructor id
@@ -126,15 +105,21 @@ app.get("/api/me", isLoggedIn, async (req, res, next) => {
     //     id: req.user.id
     //   }
     // });
-    
+
     // if(!user){
     //   return res.status(404).send("User not Found")
     // };
-      
-    
 
     res.send(req.user);
-    
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get("/api/users", isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await prisma.user.findMany({});
+    res.send(user);
   } catch (error) {
     next(error);
   }
