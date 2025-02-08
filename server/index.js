@@ -125,6 +125,57 @@ app.get("/api/users", isLoggedIn, async (req, res, next) => {
   }
 });
 
+app.get("/api/user/:id", isLoggedIn, async (req, res, next) => {
+  try {
+    
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.params.id
+      }
+    });
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.put("/api/user/:id", isLoggedIn, async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const user = await prisma.user.update({
+      where: {
+        id: req.params.id
+      },
+      data: {
+        first: req.body.first,
+        last: req.body.last,
+        email,
+        password: hashedPassword,
+      }
+    });
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.delete("/api/user/:id", isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await prisma.user.delete({
+      where: {
+        id: req.params.id
+      }
+    });
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}...`);
 });
